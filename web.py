@@ -1,32 +1,43 @@
-import base64
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Date    : 2019-12-13 14:24:03
+# @Author  : lon91ong (lon91ong@gmail.com)
+# @Link    : 
+# @Version : $Id$
 
-from flask import Flask, jsonify, request
+import falcon
 from config import Config
+from json import dumps,load
+from waitress import serve
+from base64 import b64decode
 from ocr.ml_predict import Predict
 
-app = Flask(__name__)
-
+class Resource(object):
+    def on_post(self, req, resp):
+        resp.content_type = 'application/json'
+        print('Path:', req.path)
+        if req.path == '/check-points':
+            resp.media = {"code":0,"message":"","data":{"userPoints":10000, "availablePoints":8000, "lockPoints":2000}}
+        elif req.path == '/upload':
+            try:
+                img = b64decode(load(req.stream)['captchaData'])
+            except Exception:
+                pass
+            result = Predict.share().get_coordinate(img,True)
+            resp.body = dumps({"ts":2,"code":0,"message":"","data":{"recognition":result}})
+        elif req.path == '/report-error':
+            resp.media = {"code":0,"message":"","data":{"result":True}}
+        resp.status = falcon.HTTP_200
 
 class Web:
     def run(self):
-        app.run(**Config.WEB)
-
-
-@app.route('/check', methods=['POST'], strict_slashes=False)
-def check():
-    img = request.form.get('img')
-    try:
-        img = base64.b64decode(img)
-    except Exception as e:
-        pass
-    if not img:
-        return jsonify({'msg': 'Wrong format. '})
-    result = Predict.share().get_coordinate(img)
-    return jsonify({
-        'msg': 'success',
-        'result': result
-    })
-
+        svrRes = Resource()
+        app = falcon.API()
+        app.add_route('/check-points', svrRes)
+        app.add_route('/upload', svrRes)
+        app.add_route('/report-error', svrRes)
+        
+        serve(app, listen = Config.WEB['host']+':'+str(Config.WEB['port']))
 
 if __name__ == '__main__':
     Web().run()
