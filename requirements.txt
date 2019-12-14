@@ -5,7 +5,7 @@ astor==0.8.0
 certifi==2019.6.16
 chardet==3.0.4
 Click==7.0
-Flask==1.1.1
+falcon==2.0.0
 gast==0.3.1
 google-pasta==0.1.7
 grpcio==1.23.0
