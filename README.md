@@ -13,6 +13,12 @@ pip install -r requirements.txt
 ```bash
 cp config.toml.example config.toml
 ```
+  **用ByPass第三方联众打码配置**
+  需要手动更改本机hosts, 防小白给出目录:`C:\Windows\System32\drivers\etc`, 任意文本编辑器打开`hosts`
+  添加一行: `127.0.0.1	v2-no-secure-api.jsdama.com`
+  第三方打码选"联众", 用户名密码任意, 登录, 测试...
+  需要吐槽一下ByPass, 为了推销自家的打码服务, 故意拖延第三方的打码响应时间(大约3~4s)
+
 **3. 运行程序**
 ```bash
 python main.py
