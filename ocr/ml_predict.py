@@ -46,8 +46,24 @@ class Predict(ShareInstance):
         h, w = text.shape
         text.shape = (1, h, w, 1)
         return text
+    
+    def get_image_position_by_offset(self, offsets):
+        from random import randint
+        from math import ceil
+        positions = ''
+        width = 75
+        height = 75
+        for offset in offsets:
+            random_x = randint(-5, 5)
+            random_y = randint(-5, 5)
+            offset = int(offset)
+            x = width * ((offset - 1) % 4 + 1) - width / 2 + random_x
+            y = height * ceil(offset / 4) - height / 2 + random_y
+            positions += (str(x)+',')
+            positions += (str(y)+'|')
+        return positions[:-1]
 
-    def get_coordinate(self, img_str):
+    def get_coordinate(self, img_str, lzMask = False):
         # 储存最终坐标结果
         result = ''
 
@@ -69,12 +85,8 @@ class Predict(ShareInstance):
 
             # 获取下一个词
             # 根据第一个词的长度来定位第二个词的位置
-            if len(text) == 1:
-                offset = 27
-            elif len(text) == 2:
-                offset = 47
-            else:
-                offset = 60
+            offset = 27 if len(text) == 1 else 47 if len(text) == 2 else 60
+
             text2 = self.get_text(img, offset=offset)
             if text2.mean() < 0.95:
                 label = self.model.predict(text2)
@@ -92,7 +104,10 @@ class Predict(ShareInstance):
             # 没有识别到结果
             if len(position) == 0:
                 return result
-            result = position
+            elif lzMask:
+                result = self.get_image_position_by_offset(position)
+            else:
+                result = position
             Logger.info('识别结果: %s' % result)
         except:
             pass
@@ -111,7 +126,6 @@ class Predict(ShareInstance):
         for x in range(40, img.shape[0] - length, interval + length):
             for y in range(interval, img.shape[1] - length, interval + length):
                 yield img[x:x + length, y:y + length]
-
 
 if __name__ == '__main__':
     for i in range(10):
