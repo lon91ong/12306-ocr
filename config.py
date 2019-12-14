@@ -18,7 +18,7 @@ class Config:
 
     WEB = {
         'host': '0.0.0.0',
-        'port': 8082
+        'port': 80
     }
     OCR = {
     }
