@@ -19,10 +19,10 @@ python main.py
 ```
 用于识别文字的模型文件较大，没有放在仓库中，第一次运行会自动进行联网下载，所以可能需要等待一会才能运行起来。
 
-## 用ByPass第三方联众打码配置
-需要手动更改本机hosts, 防小白给出目录:`C:\Windows\System32\drivers\etc`, 
+## 免费用ByPass第三方联众打码配置
+需要手动更改本机hosts, 防小白给出目录: `C:\Windows\System32\drivers\etc`, 
 
-任意文本编辑器打开`hosts`添加一行:
+任意文本编辑器打开 `hosts` 添加一行:
 
 `127.0.0.1	v2-no-secure-api.jsdama.com`
 
