@@ -30,12 +30,6 @@ ByPass第三方打码选"联众", 用户名密码任意, 登录, 测试...
 
 需要吐槽一下ByPass, 为了推销自家的打码服务, 故意拖延第三方的打码响应时间(大约3~4s)
 
-### 对接 Py12306
-打开 **py12306** 目录下的 `py12306/helpers/api.py` 文件，找到 `API_FREE_CODE_QCR_API=` 的位置，并替换成当前 ocr 服务的接口地址，如：
-```
-API_FREE_CODE_QCR_API = 'http://127.0.0.1:8082/check/'
-```
-
 ## Thanks
 所用的模型和算法均来自 [https://github.com/zhaipro/easy12306](https://github.com/zhaipro/easy12306) 十分感谢！
 
