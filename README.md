@@ -30,6 +30,11 @@ ByPass第三方打码选"联众", 用户名密码任意, 登录, 测试...
 
 需要吐槽一下ByPass, 为了推销自家的打码服务, 故意拖延第三方的打码响应时间(大约3~4s)
 
+## 订票助手免费打码
+采用若快的接口，`hosts`添加: `127.0.0.1   api.ruokuai.com`
+
+远程打码配置选**若快答题**，用户名密码任意，登录，保存配置
+
 ## Thanks
 所用的模型和算法均来自 [https://github.com/zhaipro/easy12306](https://github.com/zhaipro/easy12306) 十分感谢！
 
