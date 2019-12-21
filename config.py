@@ -38,10 +38,10 @@ class Config:
         ocr = configs.get('ocr', {})
         cls.OCR.update(ocr)
 
-
 if not Config.LOADED:
     Config.load()
-
+    
+listento = Config.WEB['host']+':'+str(Config.WEB['port'])
 # Logger
 def set_up_logger():
     logger = logging.getLogger(Config.APP_NAME)
@@ -52,6 +52,5 @@ def set_up_logger():
     handler.setFormatter(formatter)
     logger.addHandler(handler)
     return logger
-
 
 Logger = set_up_logger()
