@@ -29,9 +29,10 @@ class Resource(object):
                     content = FieldStorage(fp=req.stream, environ=req.env) # falcon use cgi.FieldStorage parse form data
                     img = content.getvalue('image') # attach image file in form data
                     if content.getvalue('softid') == '119671': # py12306
-                        img = b64decode(img)
-                    result = Predict.share().get_coordinate(img)
-                    resp.body = dumps({"code":0, "Result":str(result)[1:-1].replace(',','')})
+                        result = Predict.share().get_coordinate(b64decode(img))
+                    else: # 订票助手
+                        result = str(Predict.share().get_coordinate(img))[1:-1]
+                    resp.body = dumps({"code":0, "Result":result})
                 else: # py12306 free
                     img = b64decode(load(req.stream)['img'])
                     result = Predict.share().get_coordinate(img)
