@@ -14,8 +14,14 @@ pip install -r requirements.txt
 cp config.toml.example config.toml
 ```
 **3. 运行程序**
+
+监听config.toml文件配置的端口, 默认8082, 服务于py12306
 ```bash
-python main.py
+python main.py 
+```
+模拟**若快**需要监听80端口, 按下面的方式直接运行, 或者修改config.toml中的端口后按上面的来:
+```bash
+python web.py
 ```
 用于识别文字的模型文件较大，没有放在仓库中，第一次运行会自动进行联网下载，所以可能需要等待一会才能运行起来。
 
