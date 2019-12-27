@@ -28,10 +28,12 @@ class Resource(object):
                     resp.body = dumps({"ts":2,"code":0, "data":{"recognition":result}})
                 elif req.path =='/create.json': # ruokuai API
                     content = FieldStorage(fp=req.stream, environ=req.env) # falcon use cgi.FieldStorage parse form data
+                    softid = content.getvalue('soft_id')
                     img = content.getvalue('image') # attach image file in form data
                     img = img if type(img) is bytes else b64decode(img)
-                    result = Predict.share().get_coordinate(img)
-                    resp.body = dumps({"code":0, "Result":result})
+                    result = Predict.share().get_coordinate(img)#, softid=='2992',softid =='2992')
+                    print('Result:',str(result)[1:-1])
+                    resp.body = dumps({"code":0, "Result":str(result)[1:-1]})
                 else: # py12306 free
                     img = b64decode(load(req.stream)['img'])
                     result = Predict.share().get_coordinate(img)

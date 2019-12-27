@@ -47,7 +47,7 @@ class Predict(ShareInstance):
         text.shape = (1, h, w, 1)
         return text
     
-    def get_image_position_by_offset(self, offsets):
+    def get_image_position_by_offset(self, offsets, intF = False):
         from random import randint
         from math import ceil
         positions = ''
@@ -59,12 +59,13 @@ class Predict(ShareInstance):
             offset = int(offset)
             x = width * ((offset - 1) % 4 + 1) - width / 2 + random_x
             y = height * ceil(offset / 4) - height / 2 + random_y
-            positions += (str(x)+',')
-            positions += (str(y)+'|')
+            positions += (str(int(x))+',') if intF else (str(x)+',')
+            positions += (str(int(y))+',') if intF else (str(y)+'|') 
         return positions[:-1]
 
-    def get_coordinate(self, img_str, lzMask = False):
+    def get_coordinate(self, img_str, lzMask = False, intF = False):
         # 储存最终坐标结果
+        # lzMask返回坐标格式, intF坐标用整数还是小数
         result = ''
 
         try:
@@ -105,7 +106,7 @@ class Predict(ShareInstance):
             if len(position) == 0:
                 return result
             elif lzMask:
-                result = self.get_image_position_by_offset(position)
+                result = self.get_image_position_by_offset(position, intF)
             else:
                 result = position
             Logger.info('识别结果: %s' % result)
