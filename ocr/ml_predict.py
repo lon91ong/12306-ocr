@@ -47,7 +47,8 @@ class Predict(ShareInstance):
         text.shape = (1, h, w, 1)
         return text
     
-    def get_image_position_by_offset(self, offsets, intF = False):
+    def get_image_position_by_offset(self, offsets, floatF = False):
+        # floatF 返回实数列还是整数列, 默认整数列
         from random import randint
         from math import ceil
         positions = ''
@@ -59,13 +60,13 @@ class Predict(ShareInstance):
             offset = int(offset)
             x = width * ((offset - 1) % 4 + 1) - width / 2 + random_x
             y = height * ceil(offset / 4) - height / 2 + random_y
-            positions += (str(int(x))+',') if intF else (str(x)+',')
-            positions += (str(int(y))+',') if intF else (str(y)+'|') 
+            # 联众格式: 实数 x,y|x,y ; 非联众: 整型 x,y,x,y
+            positions += (str(x)+',') if floatF else (str(int(x))+',')
+            positions += (str(y)+'|') if floatF else (str(int(y))+',')
         return positions[:-1]
 
-    def get_coordinate(self, img_str, lzMask = False, intF = False):
-        # 储存最终坐标结果
-        # lzMask返回坐标格式, intF坐标用整数还是小数
+    def get_coordinate(self, img_str, option = 'list'):
+        # 储存最终坐标结果, 默认返回序号列表
         result = ''
 
         try:
@@ -105,10 +106,9 @@ class Predict(ShareInstance):
             # 没有识别到结果
             if len(position) == 0:
                 return result
-            elif lzMask:
-                result = self.get_image_position_by_offset(position, intF)
             else:
-                result = position
+                result = position if option == 'list' else \
+                self.get_image_position_by_offset(position, option == 'LianZ')
             Logger.info('识别结果: %s' % result)
         except:
             pass

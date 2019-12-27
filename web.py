@@ -24,16 +24,15 @@ class Resource(object):
                 if req.path == '/upload': #联众API, for Bypass
                     img = b64decode(load(req.stream)['captchaData'])
                     # img = b64decode(loads(req.stream.read())['captchaData'])
-                    result = Predict.share().get_coordinate(img,True)
+                    result = Predict.share().get_coordinate(img, 'LianZ')
                     resp.body = dumps({"ts":2,"code":0, "data":{"recognition":result}})
                 elif req.path =='/create.json': # ruokuai API
                     content = FieldStorage(fp=req.stream, environ=req.env) # falcon use cgi.FieldStorage parse form data
-                    softid = content.getvalue('soft_id')
+                    #softid = content.getvalue('soft_id')
                     img = content.getvalue('image') # attach image file in form data
                     img = img if type(img) is bytes else b64decode(img)
-                    result = Predict.share().get_coordinate(img)#, softid=='2992',softid =='2992')
-                    print('Result:',str(result)[1:-1])
-                    resp.body = dumps({"code":0, "Result":str(result)[1:-1]})
+                    result = Predict.share().get_coordinate(img,'ZhuS')
+                    resp.body = dumps({"code":0, "Result":result})
                 else: # py12306 free
                     img = b64decode(load(req.stream)['img'])
                     result = Predict.share().get_coordinate(img)
