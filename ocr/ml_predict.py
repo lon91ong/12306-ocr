@@ -108,6 +108,7 @@ class Predict(ShareInstance):
                 return result
             else:
                 result = position if option == 'list' else \
+                str(position)[1:-1] if option == 'ZhuS' else \
                 self.get_image_position_by_offset(position, option == 'LianZ')
             Logger.info('识别结果: %s' % result)
         except:

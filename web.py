@@ -32,7 +32,8 @@ class Resource(object):
                     img = content.getvalue('image') # attach image file in form data
                     img = img if type(img) is bytes else b64decode(img)
                     result = Predict.share().get_coordinate(img,'ZhuS')
-                    resp.body = dumps({"code":0, "Result":result})
+                    print(result)
+                    resp.media = {"Result":result}
                 else: # py12306 free
                     img = b64decode(load(req.stream)['img'])
                     result = Predict.share().get_coordinate(img)
