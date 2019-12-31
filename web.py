@@ -32,7 +32,6 @@ class Resource(object):
                     img = content.getvalue('image') # attach image file in form data
                     img = img if type(img) is bytes else b64decode(img)
                     result = Predict.share().get_coordinate(img,'ZhuS')
-                    print(result)
                     resp.media = {"Result":result}
                 else: # py12306 free
                     img = b64decode(load(req.stream)['img'])
@@ -43,13 +42,20 @@ class Resource(object):
                 pass
         elif req.path in ['/report-error', '/reporterror.json']:
             resp.media = {"code":0,"Error":1,"data":{"result":True}}
+        else:
+            resp.media = {'code':1,'msg':'打码服务正常，访问姿势有误！'}
+        resp.status = falcon.HTTP_200
+    
+    def on_get(self, req, resp):
+        print("URL:", req.url)
+        resp.media = {'code':1,'msg':'打码服务正常，访问姿势有误！'}
         resp.status = falcon.HTTP_200
 
 class Web:
     def run(self, listenStr = listento):
         svrRes = Resource()
         app = falcon.API()
-        apilst = ['/info.json','/create.json','/reporterror.json','/check-points', '/upload', '/check', '/report-error']
+        apilst = ['/test','/info.json','/create.json','/reporterror.json','/check-points', '/upload', '/check', '/report-error']
         for apistr in apilst:
             app.add_route(apistr, svrRes)
         
