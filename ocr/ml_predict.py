@@ -3,13 +3,13 @@ import base64
 from os import path
 
 import cv2, os
-import tensorflow as tf
+from tensorflow.compat.v1 import logging as tf_log
 import numpy as np
 from keras import models
 
 from config import Logger
 
-tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
+tf_log.set_verbosity(tf_log.ERROR)
 
 
 class ShareInstance():
@@ -117,7 +117,7 @@ class Predict(ShareInstance):
 
     def preprocess_input(self, x):
         x = x.astype('float32')
-        # 我是用cv2来读取的图片，其已经是BGR格式了
+        # 用cv2来读取的图片，其已经是BGR格式了
         mean = [103.939, 116.779, 123.68]
         x -= mean
         return x
