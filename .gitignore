@@ -6,3 +6,5 @@ config.toml
 docker-compose.yml
 ocr/12306.image.model.h5
 .vscode
+vven
+/*.log
